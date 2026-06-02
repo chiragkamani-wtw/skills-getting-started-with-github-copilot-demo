@@ -1,0 +1,50 @@
+name: Feature / Implementation Task
+description: A clearly scoped implementation task. Issues without acceptance criteria will not be assigned to Copilot agents.
+title: "[Feature]: "
+labels: ["enhancement"]
+body:
+  - type: textarea
+    id: summary
+    attributes:
+      label: Summary
+      description: One or two sentences describing the desired outcome. Describe the need, not the approach.
+      placeholder: "Students have no way to cancel a signup. A DELETE endpoint is needed."
+    validations:
+      required: true
+
+  - type: textarea
+    id: current
+    attributes:
+      label: Current Behaviour
+      description: What happens today? Reference specific file and function names.
+      placeholder: "src/app.py only exposes GET /activities and POST /activities/{name}/signup. No removal endpoint exists."
+    validations:
+      required: true
+
+  - type: textarea
+    id: criteria
+    attributes:
+      label: Acceptance Criteria
+      description: Numbered list. Each item must be independently verifiable. Name exact methods and tests.
+      placeholder: |
+        1. DELETE /activities/{activity_name}/signup?email={email} is added in src/app.py
+        2. Returns 404 if activity not found (detail: "Activity not found")
+        3. Returns 404 if email not in participants (detail: "Student not registered")
+        4. Returns 200 {"message": "Removed {email} from {activity_name}"} on success
+        5. Tests added: test_unregister_removes_participant, test_unregister_404_unknown_activity, test_unregister_404_not_registered
+        6. All existing tests pass
+    validations:
+      required: true
+
+  - type: textarea
+    id: context
+    attributes:
+      label: Technical Context
+      description: Relevant files, patterns to follow, and constraints.
+      placeholder: |
+        - File: src/app.py — follow the pattern of signup_for_activity()
+        - Frontend: src/static/app.js — follow existing fetch() pattern if UI change needed
+        - Do not add new libraries
+        - In-memory only — use list.remove()
+    validations:
+      required: true

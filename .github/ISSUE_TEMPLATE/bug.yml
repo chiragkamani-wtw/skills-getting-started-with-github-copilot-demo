@@ -1,0 +1,66 @@
+name: Bug Report
+description: A reproducible defect to fix. Issues without reproduction steps will not be assigned to Copilot agents.
+title: "[Bug]: "
+labels: ["bug"]
+body:
+  - type: textarea
+    id: description
+    attributes:
+      label: Bug Description
+      description: What is wrong, and what did you expect instead? One or two sentences.
+      placeholder: "The signup endpoint adds a student past max_participants without error."
+    validations:
+      required: true
+
+  - type: textarea
+    id: steps
+    attributes:
+      label: Steps to Reproduce
+      description: Exact API calls or UI steps that trigger the defect.
+      placeholder: |
+        1. POST /activities/Chess Club/signup?email=s1@mergington.edu (repeat 12 times)
+        2. POST /activities/Chess Club/signup?email=extra@mergington.edu
+        3. GET /activities — extra student appears despite max_participants: 12
+    validations:
+      required: true
+
+  - type: textarea
+    id: expected
+    attributes:
+      label: Expected Behaviour
+      placeholder: "400 Bad Request with detail: Activity is full"
+    validations:
+      required: true
+
+  - type: textarea
+    id: actual
+    attributes:
+      label: Actual Behaviour
+      description: Paste response bodies, error messages, or stack traces verbatim.
+    validations:
+      required: true
+
+  - type: textarea
+    id: context
+    attributes:
+      label: Technical Context
+      description: Relevant file paths, function names, and suggested fix approach.
+      placeholder: |
+        - File: src/app.py — function signup_for_activity()
+        - Fix: check len(participants) >= max_participants before appending
+        - Test: add test_signup_fails_when_activity_is_full in tests/test_app.py
+    validations:
+      required: true
+
+  - type: textarea
+    id: criteria
+    attributes:
+      label: Acceptance Criteria
+      description: Numbered list. Each item must be independently verifiable.
+      placeholder: |
+        1. signup_for_activity() raises HTTPException(400) with detail "Activity is full" at capacity
+        2. Successful signups still return 200
+        3. Pytest test test_signup_fails_when_activity_is_full passes
+        4. All existing tests pass
+    validations:
+      required: true
