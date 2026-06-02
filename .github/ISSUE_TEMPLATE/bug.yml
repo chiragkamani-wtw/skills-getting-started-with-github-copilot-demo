@@ -1,5 +1,5 @@
 name: Bug Report
-description: A reproducible business problem to fix. Issues without reproduction steps will not be assigned to Copilot agents.
+description: A reproducible business problem to fix. Keep the description business-first and the technical context short.
 title: "[Bug]: "
 labels: ["bug"]
 body:
@@ -8,7 +8,7 @@ body:
     attributes:
       label: Bug Description
       description: Describe the business problem in plain language. One or two sentences.
-      placeholder: "A student can be added to an activity even after the activity is full."
+      placeholder: "Students can keep signing up for an activity even after it is full."
     validations:
       required: true
 
@@ -16,12 +16,12 @@ body:
     id: steps
     attributes:
       label: Steps to Reproduce
-      description: Exact UI or API steps that trigger the defect.
+      description: Simple user steps or API steps that show the problem.
       placeholder: |
-        1. Open the activity sign-up screen or call the signup endpoint for Chess Club
-        2. Sign up students until the activity reaches its limit
-        3. Try one more sign-up
-        4. The extra student is still accepted instead of being blocked
+        1. Open the activity sign-up page or submit the signup request for Chess Club
+        2. Sign up enough students to reach the activity limit
+        3. Try one more signup
+        4. The extra student is accepted instead of being blocked
     validations:
       required: true
 
@@ -29,7 +29,7 @@ body:
     id: expected
     attributes:
       label: Expected Behaviour
-      placeholder: "The system should prevent the extra signup and show a clear message such as 'Activity is full'."
+      placeholder: "The system should block the extra signup and show a clear message like 'Activity is full'."
     validations:
       required: true
 
@@ -38,6 +38,7 @@ body:
     attributes:
       label: Actual Behaviour
       description: Paste the actual result, response, or message that was shown.
+      placeholder: "The extra student is added and the activity goes over capacity."
     validations:
       required: true
 
@@ -45,11 +46,11 @@ body:
     id: context
     attributes:
       label: Technical Context
-      description: Keep this short. Give the exact file and function name so the agent can jump to the right place.
+      description: Keep this short. Give only the minimum technical anchor the agent needs.
       placeholder: |
         - File: src/app.py — function signup_for_activity()
         - Business rule: do not allow sign-up after the activity is full
-        - Test: add a pytest test for the full-capacity scenario
+        - Test: cover the full-capacity scenario in pytest
     validations:
       required: true
 
