@@ -1,5 +1,5 @@
 name: Bug Report
-description: A reproducible defect to fix. Issues without reproduction steps will not be assigned to Copilot agents.
+description: A reproducible business problem to fix. Issues without reproduction steps will not be assigned to Copilot agents.
 title: "[Bug]: "
 labels: ["bug"]
 body:
@@ -7,8 +7,8 @@ body:
     id: description
     attributes:
       label: Bug Description
-      description: What is wrong, and what did you expect instead? One or two sentences.
-      placeholder: "The signup endpoint adds a student past max_participants without error."
+      description: Describe the business problem in plain language. One or two sentences.
+      placeholder: "A student can be added to an activity even after the activity is full."
     validations:
       required: true
 
@@ -16,11 +16,12 @@ body:
     id: steps
     attributes:
       label: Steps to Reproduce
-      description: Exact API calls or UI steps that trigger the defect.
+      description: Exact UI or API steps that trigger the defect.
       placeholder: |
-        1. POST /activities/Chess Club/signup?email=s1@mergington.edu (repeat 12 times)
-        2. POST /activities/Chess Club/signup?email=extra@mergington.edu
-        3. GET /activities — extra student appears despite max_participants: 12
+        1. Open the activity sign-up screen or call the signup endpoint for Chess Club
+        2. Sign up students until the activity reaches its limit
+        3. Try one more sign-up
+        4. The extra student is still accepted instead of being blocked
     validations:
       required: true
 
@@ -28,7 +29,7 @@ body:
     id: expected
     attributes:
       label: Expected Behaviour
-      placeholder: "400 Bad Request with detail: Activity is full"
+      placeholder: "The system should prevent the extra signup and show a clear message such as 'Activity is full'."
     validations:
       required: true
 
@@ -36,7 +37,7 @@ body:
     id: actual
     attributes:
       label: Actual Behaviour
-      description: Paste response bodies, error messages, or stack traces verbatim.
+      description: Paste the actual result, response, or message that was shown.
     validations:
       required: true
 
@@ -44,11 +45,11 @@ body:
     id: context
     attributes:
       label: Technical Context
-      description: Relevant file paths, function names, and suggested fix approach.
+      description: Keep this short. Give the exact file and function name so the agent can jump to the right place.
       placeholder: |
         - File: src/app.py — function signup_for_activity()
-        - Fix: check len(participants) >= max_participants before appending
-        - Test: add test_signup_fails_when_activity_is_full in tests/test_app.py
+        - Business rule: do not allow sign-up after the activity is full
+        - Test: add a pytest test for the full-capacity scenario
     validations:
       required: true
 
@@ -56,11 +57,11 @@ body:
     id: criteria
     attributes:
       label: Acceptance Criteria
-      description: Numbered list. Each item must be independently verifiable.
+      description: Numbered list. Each item must be independently verifiable by a BA, QA, or developer.
       placeholder: |
-        1. signup_for_activity() raises HTTPException(400) with detail "Activity is full" at capacity
-        2. Successful signups still return 200
-        3. Pytest test test_signup_fails_when_activity_is_full passes
+        1. Users cannot sign up once the activity is full
+        2. Users see a clear message when sign-up is blocked
+        3. A pytest test covers the full-capacity scenario
         4. All existing tests pass
     validations:
       required: true

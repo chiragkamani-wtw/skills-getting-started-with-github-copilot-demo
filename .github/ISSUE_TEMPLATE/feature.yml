@@ -1,5 +1,5 @@
 name: Feature / Implementation Task
-description: A clearly scoped implementation task. Issues without acceptance criteria will not be assigned to Copilot agents.
+description: A clearly scoped business need. Issues without acceptance criteria will not be assigned to Copilot agents.
 title: "[Feature]: "
 labels: ["enhancement"]
 body:
@@ -7,8 +7,8 @@ body:
     id: summary
     attributes:
       label: Summary
-      description: One or two sentences describing the desired outcome. Describe the need, not the approach.
-      placeholder: "Students have no way to cancel a signup. A DELETE endpoint is needed."
+      description: One or two sentences describing the desired outcome in business terms.
+      placeholder: "Students need a way to cancel an activity sign-up after they change their mind."
     validations:
       required: true
 
@@ -16,8 +16,8 @@ body:
     id: current
     attributes:
       label: Current Behaviour
-      description: What happens today? Reference specific file and function names.
-      placeholder: "src/app.py only exposes GET /activities and POST /activities/{name}/signup. No removal endpoint exists."
+      description: What happens today? Keep it user-focused, with a short technical reference if helpful.
+      placeholder: "There is no way for a student to remove themselves from an activity once they have signed up."
     validations:
       required: true
 
@@ -25,14 +25,13 @@ body:
     id: criteria
     attributes:
       label: Acceptance Criteria
-      description: Numbered list. Each item must be independently verifiable. Name exact methods and tests.
+      description: Numbered list. Each item must be independently verifiable by a BA, QA, or developer.
       placeholder: |
-        1. DELETE /activities/{activity_name}/signup?email={email} is added in src/app.py
-        2. Returns 404 if activity not found (detail: "Activity not found")
-        3. Returns 404 if email not in participants (detail: "Student not registered")
-        4. Returns 200 {"message": "Removed {email} from {activity_name}"} on success
-        5. Tests added: test_unregister_removes_participant, test_unregister_404_unknown_activity, test_unregister_404_not_registered
-        6. All existing tests pass
+        1. A student can cancel their sign-up for an activity
+        2. The system shows a clear message when cancellation succeeds
+        3. The system shows a clear message when the activity does not exist or the student was not signed up
+        4. A pytest test covers the cancel-sign-up path
+        5. All existing tests pass
     validations:
       required: true
 
@@ -40,11 +39,10 @@ body:
     id: context
     attributes:
       label: Technical Context
-      description: Relevant files, patterns to follow, and constraints.
+      description: Keep this short. Give the exact file and function name so the agent can act quickly.
       placeholder: |
         - File: src/app.py — follow the pattern of signup_for_activity()
-        - Frontend: src/static/app.js — follow existing fetch() pattern if UI change needed
-        - Do not add new libraries
-        - In-memory only — use list.remove()
+        - Frontend: src/static/app.js if the screen also needs a button
+        - Constraint: keep the change in-memory and avoid adding new libraries
     validations:
       required: true

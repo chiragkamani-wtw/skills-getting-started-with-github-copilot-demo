@@ -63,6 +63,9 @@ uvicorn src.app:app --reload
 - Tests use `fastapi.testclient.TestClient`; import the `app` object from `src.app`
 - Test naming: `test_<function>_<condition>_<expected_outcome>` (e.g. `test_signup_when_full_returns_400`)
 - No new libraries without explicit approval in the issue
+- Write issues in business language first, then add a short technical context block with the exact file and function name.
+- For BA-style issues, describe the user outcome, who is affected, and the rule that is being broken before naming any code.
+- Keep technical context minimal but explicit so the agent can jump straight to the right function without guessing.
 
 ---
 
