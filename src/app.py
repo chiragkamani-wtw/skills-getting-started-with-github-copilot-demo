@@ -76,6 +76,10 @@ def signup_for_activity(activity_name: str, email: str):
             detail="Email must be a mergington.edu address",
         )
 
+    # Check for duplicate registration
+    if normalized_email in activity["participants"]:
+        raise HTTPException(status_code=400, detail="Student is already signed up")
+
     # Add student
     activity["participants"].append(normalized_email)
     return {"message": f"Signed up {normalized_email} for {activity_name}"}

@@ -36,3 +36,17 @@ def test_signup_with_mergington_email_adds_participant():
     assert response.status_code == 200
     assert response.json()["message"] == "Signed up student@mergington.edu for Chess Club"
     assert "student@mergington.edu" in app_module.activities["Chess Club"]["participants"]
+
+
+def test_duplicate_signup_returns_400():
+    client.post(
+        "/activities/Chess Club/signup",
+        params={"email": "student@mergington.edu"},
+    )
+    response = client.post(
+        "/activities/Chess Club/signup",
+        params={"email": "student@mergington.edu"},
+    )
+
+    assert response.status_code == 400
+    assert response.json()["detail"] == "Student is already signed up"
