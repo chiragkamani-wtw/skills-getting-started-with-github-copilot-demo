@@ -55,6 +55,17 @@ uvicorn src.app:app --reload
 
 ---
 
+## Branch Policy
+
+- `main` is the protected release branch.
+- `develop` is the integration branch for active work.
+- Always create bug fixes and feature work on a feature branch off `develop`.
+- Open a pull request from the feature branch back into `develop` when the work is ready.
+- Do not merge directly into `main` for regular bug fixes or feature work.
+- If branch-specific Copilot guidance is needed, use `applyTo` in the instruction file so the extra guidance only applies to matching file paths.
+
+---
+
 ## Code Conventions
 
 - All routes in `src/app.py` — do not create additional modules unless the issue explicitly requires it
