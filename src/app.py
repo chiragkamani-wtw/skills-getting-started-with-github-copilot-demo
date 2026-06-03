@@ -14,6 +14,8 @@ from pathlib import Path
 app = FastAPI(title="Mergington High School API",
               description="API for viewing and signing up for extracurricular activities")
 
+MERGINGTON_EMAIL_DOMAIN = "@mergington.edu"
+
 # Mount the static files directory
 current_dir = Path(__file__).parent
 app.mount("/static", StaticFiles(directory=os.path.join(Path(__file__).parent,
@@ -24,19 +26,19 @@ activities = {
     "Chess Club": {
         "description": "Learn strategies and compete in chess tournaments.",
         "schedule": "Fridays, 3:30 PM - 5:00 PM",
-        "max_participants": 12,
+        "max_participants": 5,
         "participants": ["michael@mergington.edu", "daniel@mergington.edu"]
     },
     "Programming Class": {
         "description": "Learn programming fundamentals and build software projects",
         "schedule": "Tuesdays and Thursdays, 3:30 PM - 4:30 PM",
-        "max_participants": 20,
+        "max_participants": 8,
         "participants": ["emma@mergington.edu", "sophia@mergington.edu"]
     },
     "Gym Class": {
         "description": "Physical education and sports activities",
         "schedule": "Mondays, Wednesdays, Fridays, 2:00 PM - 3:00 PM",
-        "max_participants": 30,
+        "max_participants": 10,
         "participants": ["john@mergington.edu", "olivia@mergington.edu"]
     }
 }
@@ -52,6 +54,10 @@ def get_activities():
     return activities
 
 
+def is_mergington_email(email: str) -> bool:
+    return email.strip().lower().endswith(MERGINGTON_EMAIL_DOMAIN)
+
+
 @app.post("/activities/{activity_name}/signup")
 def signup_for_activity(activity_name: str, email: str):
     """Sign up a student for an activity"""
@@ -62,6 +68,14 @@ def signup_for_activity(activity_name: str, email: str):
     # Get the specific activity
     activity = activities[activity_name]
 
+    normalized_email = email.strip().lower()
+
+    if not is_mergington_email(normalized_email):
+        raise HTTPException(
+            status_code=400,
+            detail="Email must be a mergington.edu address",
+        )
+
     # Add student
-    activity["participants"].append(email)
-    return {"message": f"Signed up {email} for {activity_name}"}
+    activity["participants"].append(normalized_email)
+    return {"message": f"Signed up {normalized_email} for {activity_name}"}
