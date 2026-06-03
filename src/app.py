@@ -76,6 +76,10 @@ def signup_for_activity(activity_name: str, email: str):
             detail="Email must be a mergington.edu address",
         )
 
+    # Check capacity
+    if len(activity["participants"]) >= activity["max_participants"]:
+        raise HTTPException(status_code=400, detail="Activity is full")
+
     # Add student
     activity["participants"].append(normalized_email)
     return {"message": f"Signed up {normalized_email} for {activity_name}"}

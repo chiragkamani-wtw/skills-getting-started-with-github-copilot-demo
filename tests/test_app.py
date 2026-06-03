@@ -36,3 +36,20 @@ def test_signup_with_mergington_email_adds_participant():
     assert response.status_code == 200
     assert response.json()["message"] == "Signed up student@mergington.edu for Chess Club"
     assert "student@mergington.edu" in app_module.activities["Chess Club"]["participants"]
+
+
+def test_signup_when_full_returns_400():
+    activity = app_module.activities["Chess Club"]
+    max_participants = activity["max_participants"]
+    # Fill up remaining spots
+    existing = len(activity["participants"])
+    for i in range(max_participants - existing):
+        activity["participants"].append(f"filler{i}@mergington.edu")
+
+    response = client.post(
+        "/activities/Chess Club/signup",
+        params={"email": "overflow@mergington.edu"},
+    )
+
+    assert response.status_code == 400
+    assert response.json()["detail"] == "Activity is full"
